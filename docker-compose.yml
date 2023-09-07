@@ -1,16 +1,17 @@
 version: "3"
 
 services:
-  clickhouse:
-    image: clickhouse/clickhouse-server:head-alpine
-    restart: on-failure
+  db:
+    image: ankane/pgvector
+    restart: always
     environment:
-      CLICKHOUSE_DB: uptrace
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vault
     volumes:
-      - ch_data:/var/lib/clickhouse
+      - pgdata:/var/lib/postgresql/data
     ports:
-      - "8123:8123"
-      - "9000:9000"
+      - "5432:5432"
   
   qdrant-database:
     image: qdrant/qdrant:v1.3.2
@@ -23,5 +24,5 @@ services:
       - qdrant_data:/qdrant/storage
 
 volumes:
-  ch_data:
+  pgdata:
   qdrant_data:
