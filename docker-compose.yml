@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: vault
+      POSTGRES_DB: embeddings
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
