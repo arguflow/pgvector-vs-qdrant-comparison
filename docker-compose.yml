@@ -11,7 +11,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5436:5432"
   
   qdrant-database:
     image: qdrant/qdrant:v1.3.2
