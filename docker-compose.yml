@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  db:
+  pgvector:
     image: ankane/pgvector
     restart: always
     environment:
@@ -9,9 +9,21 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: embeddings
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgvectordata:/var/lib/postgresql/data
     ports:
       - "5436:5432"
+
+  lanterndb:
+    image: lanterndata/lantern:latest-pg15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: embeddings
+    volumes:
+      - lanterndata:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
   
   qdrant-database:
     image: qdrant/qdrant:v1.3.2
@@ -24,5 +36,6 @@ services:
       - qdrant_data:/qdrant/storage
 
 volumes:
-  pgdata:
+  pgvectordata:
+  lanterndata:
   qdrant_data:
