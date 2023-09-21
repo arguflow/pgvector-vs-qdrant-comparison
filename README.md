@@ -18,6 +18,8 @@ The objective behind this notebook was to assess the feasibility of substituting
 
 ## Star us on Github at [github.com/arguflow/arguflow](https://github.com/arguflow/arguflow)!!!!
 
+![star-please](./images/please-star-us.png)
+
 ## Findings
 
 Both [pgvector](https://github.com/pgvector/pgvector) and [lanterndb](https://lantern.dev/) are **faster** than [Qdrant](https://qdrant.tech/) and **can** be *equally accurate* after tuning. This means that you should first place your vectors in both [Qdrant](https://qdrant.tech/) and [pgvector](https://github.com/pgvector/pgvector) or [lanterndb](https://lantern.dev/) then tweak your HNSW index params, `m` and `ef_construction`, such that the postgres solution is just as accurate as [Qdrant](https://qdrant.tech/). Following that, move forward with postgres alone.
