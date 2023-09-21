@@ -16,7 +16,7 @@
 
 The objective behind this notebook was to assess the feasibility of substituting our system's SVD, [Qdrant](https://qdrant.tech/), with [pgvector](https://github.com/pgvector/pgvector) or [lanterndb](https://lantern.dev/) - AKA postgresql + [usearch](https://www.unum.cloud/). Employing an OLTP solution like these postgresql focused ones would offer the advantage of utilizing a transactional database with schema and transaction support for both objects and vectors, thereby eliminating the need for external database joins during diverse search operations.
 
-## Star us on Github at [github.com//arguflow/arguflow](https://github.com/arguflow/arguflow)!!!!
+## Star us on Github at [github.com/arguflow/arguflow](https://github.com/arguflow/arguflow)!!!!
 
 ## Findings
 
