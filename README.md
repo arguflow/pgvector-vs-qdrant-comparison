@@ -12,18 +12,32 @@
 </strong>
 </p>
 
-# Exploring replacing our SVD (qdrant) with Clickhouse
+# It's time to ditch your specialized vector database for postgresql
 
-The objective behind this notebook was to assess the feasibility of substituting our system's SVD (specialized vector database), [Qdrant](https://qdrant.tech/), with [Clickhouse](https://clickhouse.com/). Employing ClickHouse would offer the advantage of utilizing a comprehensive DBMS, thereby eliminating the need for external database joins during diverse search operations.
+The objective behind this notebook was to assess the feasibility of substituting our system's SVD, [Qdrant](https://qdrant.tech/), with [pgvector](https://github.com/pgvector/pgvector) or [lanterndb](https://lantern.dev/) - AKA postgresql + [usearch](https://www.unum.cloud/). Employing an OLTP solution like these postgresql focused ones would offer the advantage of utilizing a transactional database with schema and transaction support for both objects and vectors, thereby eliminating the need for external database joins during diverse search operations.
+
+## Star us on Github at [github.com//arguflow/arguflow](https://github.com/arguflow/arguflow)!!!!
 
 ## Findings
 
-The key takeaway here is that we are strategically developing our systems to facilitate seamless replacement of the underlying vector store. Anticipating the uncertain trajectory of vector store solutions, we're exercising caution and refraining from fully committing to any particular data store solution at this point.
+Both [pgvector](https://github.com/pgvector/pgvector) and [lanterndb](https://lantern.dev/) are **faster** than [Qdrant](https://qdrant.tech/) and **can** be *equally accurate* after tuning. This means that you should first place your vectors in both [Qdrant](https://qdrant.tech/) and [pgvector](https://github.com/pgvector/pgvector) or [lanterndb](https://lantern.dev/) then tweak your HNSW index params, `m` and `ef_construction`, such that the postgres solution is just as accurate as [Qdrant](https://qdrant.tech/). Following that, move forward with postgres alone.
 
-For now, we will stick to [Qdrant](https://qdrant.tech/) for our competitive debate demos as [Clickhouse](https://clickhouse.com/)'s [annoy index](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes) is too imprecise to be viable.
+If you are not already using postgres and do not have requirements for an ACID compliant solution, then we would still recommend [Qdrant](https://qdrant.tech/). It has a lot of convience features, supports quantization, and does not require tuning to be accurate. 
 
-However, it is important to note that Clickhouse wins out on pure speed and can be the right choice for datasets characterized by substantial sparsity or considerable size. We may use Clickhouse for future customer deployments when it makes sense to do so.
+### Speed Comparisons
 
-## Replicating our results
+![pgsolutions vs qdrant](./images/speed-comparison.png)
 
-Head over to [this repository's notebook](https://github.com/arguflow/qdrant-clickhouse-migrator/blob/main/qdrant-to-ch.ipynb) and follow the instructions there.
+### Accuracy comparisons
+
+![pgvector accuracy](./images/pgvector-accuracy.png)
+
+![lanterndb accuracy](./images/lanterndb-accuracy.png)
+
+
+### Replicating our results
+1. Download the dataset via [this link](https://drive.proton.me/urls/FED1ABWG70#ItjHZqiPpUao). This is roughly the [DebateSum dataset](https://aclanthology.org/2020.argmining-1.1/), but with some improved parsing loggic and dedup detection as noted on [our docs](https://docs.arguflow.ai).
+2. Place the dataset into the same directory as this notebook
+3. `docker compose up -d`
+4. `cat .env.dist > .env`
+4. Run all to duplicate our findings
